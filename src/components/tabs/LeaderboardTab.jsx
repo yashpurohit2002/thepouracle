@@ -109,12 +109,12 @@ export default function LeaderboardTab() {
                     </div>
                     {!isMe && (
                       <button
-                        className="font-pixel text-xs px-2 py-1"
+                        className="px-2 py-1"
                         style={{
-                          color: '#ff2d78',
                           border: '1px solid #ff2d7844',
-                          fontSize: '0.55rem',
-                          minHeight: '32px',
+                          fontSize: '1rem',
+                          minHeight: '36px',
+                          lineHeight: 1,
                         }}
                         onClick={() => setChallengeTarget(p)}
                         title={`Challenge ${p.display_name}`}
