@@ -1,9 +1,11 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useApp } from '../../context/AppContext'
 import { PLAYER_COLORS, ALCOHOLIC_TYPES } from '../../constants/drinks'
+import ChallengePickerModal from '../ChallengePickerModal'
 
 export default function LeaderboardTab() {
   const { players, drinks, player: me } = useApp()
+  const [challengeTarget, setChallengeTarget] = useState(null)
 
   const leaderboard = useMemo(() => {
     const counts = {}
@@ -97,12 +99,29 @@ export default function LeaderboardTab() {
                     </div>
                   </div>
 
-                  {/* Count */}
-                  <div
-                    className="font-pixel text-lg flex-shrink-0 score-display"
-                    style={{ color, textShadow: `0 0 10px ${color}` }}
-                  >
-                    {p.count}
+                  {/* Count + challenge button */}
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <div
+                      className="font-pixel text-lg score-display"
+                      style={{ color, textShadow: `0 0 10px ${color}` }}
+                    >
+                      {p.count}
+                    </div>
+                    {!isMe && (
+                      <button
+                        className="font-pixel text-xs px-2 py-1"
+                        style={{
+                          color: '#ff2d78',
+                          border: '1px solid #ff2d7844',
+                          fontSize: '0.55rem',
+                          minHeight: '32px',
+                        }}
+                        onClick={() => setChallengeTarget(p)}
+                        title={`Challenge ${p.display_name}`}
+                      >
+                        ⚔️
+                      </button>
+                    )}
                   </div>
                 </div>
               )
@@ -110,6 +129,13 @@ export default function LeaderboardTab() {
           </div>
         )}
       </div>
+
+      {challengeTarget && (
+        <ChallengePickerModal
+          targetPlayer={challengeTarget}
+          onClose={() => setChallengeTarget(null)}
+        />
+      )}
     </div>
   )
 }

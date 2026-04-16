@@ -1,6 +1,7 @@
 const SESSION_KEY = 'pouracle_session'
 const PLAYER_KEY = 'pouracle_player'
 const ACHIEVEMENTS_PREFIX = 'pouracle_achievements_'
+const OFFLINE_QUEUE_KEY = 'pouracle_offline_queue'
 
 export function saveSession(session, player) {
   try {
@@ -43,4 +44,31 @@ export function addUnlockedAchievement(sessionId, key) {
       localStorage.setItem(ACHIEVEMENTS_PREFIX + sessionId, JSON.stringify([...existing, key]))
     }
   } catch (e) {}
+}
+
+export function getOfflineQueue() {
+  try {
+    const raw = localStorage.getItem(OFFLINE_QUEUE_KEY)
+    return raw ? JSON.parse(raw) : []
+  } catch (e) {
+    return []
+  }
+}
+
+export function saveOfflineQueue(queue) {
+  try {
+    localStorage.setItem(OFFLINE_QUEUE_KEY, JSON.stringify(queue))
+  } catch (e) {}
+}
+
+export function clearOfflineQueue() {
+  try {
+    localStorage.removeItem(OFFLINE_QUEUE_KEY)
+  } catch (e) {}
+}
+
+export function enqueueOfflineDrink(entry) {
+  const queue = getOfflineQueue()
+  queue.push({ ...entry, _tempId: `temp_${Date.now()}_${Math.random().toString(36).slice(2)}` })
+  saveOfflineQueue(queue)
 }

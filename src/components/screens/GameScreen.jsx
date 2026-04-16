@@ -6,10 +6,17 @@ import LeaderboardTab from '../tabs/LeaderboardTab'
 import TimelineTab from '../tabs/TimelineTab'
 import StatsTab from '../tabs/StatsTab'
 import QRCodeModal from '../QRCodeModal'
+import IncomingChallengeOverlay from '../IncomingChallengeOverlay'
+import ActiveChallengeBar from '../ActiveChallengeBar'
 import { ALCOHOLIC_TYPES } from '../../constants/drinks'
 
 export default function GameScreen() {
-  const { session, player, players, drinks, endSession, leaveSession } = useApp()
+  const {
+    session, player, players, drinks, endSession, leaveSession,
+    incomingChallenge, activeChallenge,
+    acceptChallenge, declineChallenge, completeChallenge, forfeitChallenge,
+    isOnline, offlineQueueCount,
+  } = useApp()
   const [activeTab, setActiveTab] = useState(0)
   const [showMenu, setShowMenu] = useState(false)
   const [showQR, setShowQR] = useState(false)
@@ -113,6 +120,32 @@ export default function GameScreen() {
         </div>
       )}
 
+      {/* Active challenge banner */}
+      {activeChallenge && (
+        <ActiveChallengeBar
+          challenge={activeChallenge}
+          onComplete={() => completeChallenge(activeChallenge.id)}
+          onForfeit={() => forfeitChallenge(activeChallenge.id)}
+        />
+      )}
+
+      {/* Offline indicator */}
+      {!isOnline && (
+        <div
+          className="flex-shrink-0 flex items-center justify-center gap-2 px-4 py-2"
+          style={{ background: '#1a0a00', borderBottom: '1px solid #ff660044' }}
+        >
+          <span className="font-pixel text-xs" style={{ color: '#ff6600', fontSize: '0.5rem' }}>
+            ● OFFLINE
+          </span>
+          {offlineQueueCount > 0 && (
+            <span className="font-pixel text-xs" style={{ color: '#ff660088', fontSize: '0.45rem' }}>
+              {offlineQueueCount} drink{offlineQueueCount !== 1 ? 's' : ''} queued
+            </span>
+          )}
+        </div>
+      )}
+
       {/* Tab content */}
       <main className="game-content overflow-hidden">
         <div className="h-full flex flex-col">
@@ -128,6 +161,15 @@ export default function GameScreen() {
       {/* QR modal */}
       {showQR && (
         <QRCodeModal roomCode={session?.roomCode} onClose={() => setShowQR(false)} />
+      )}
+
+      {/* Incoming challenge overlay */}
+      {incomingChallenge && (
+        <IncomingChallengeOverlay
+          challenge={incomingChallenge}
+          onAccept={() => acceptChallenge(incomingChallenge.id)}
+          onDecline={() => declineChallenge(incomingChallenge.id)}
+        />
       )}
     </div>
   )
