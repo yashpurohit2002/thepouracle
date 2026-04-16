@@ -1,0 +1,405 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+  }
+
+  html, body, #root {
+    height: 100%;
+    height: 100dvh;
+  }
+
+  body {
+    background-color: #0a0a0a;
+    color: #e0e0e0;
+    font-family: 'Press Start 2P', cursive;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  /* Scrollable areas */
+  .scroll-area {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+
+  /* Hide scrollbar but keep scroll */
+  .scroll-area::-webkit-scrollbar {
+    width: 4px;
+  }
+  .scroll-area::-webkit-scrollbar-track {
+    background: #0a0a0a;
+  }
+  .scroll-area::-webkit-scrollbar-thumb {
+    background: #2a2a4a;
+    border-radius: 2px;
+  }
+}
+
+@layer components {
+  /* CRT scanline overlay */
+  .crt-overlay {
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.06) 0px,
+      rgba(0, 0, 0, 0.06) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    pointer-events: none;
+    z-index: 9998;
+  }
+
+  /* Vignette */
+  .vignette {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.7) 100%);
+    pointer-events: none;
+    z-index: 9997;
+  }
+
+  /* Neon text effects */
+  .neon-green {
+    color: #39ff14;
+    text-shadow: 0 0 7px #39ff14, 0 0 14px #39ff14, 0 0 28px rgba(57,255,20,0.5);
+  }
+
+  .neon-pink {
+    color: #ff2d78;
+    text-shadow: 0 0 7px #ff2d78, 0 0 14px #ff2d78, 0 0 28px rgba(255,45,120,0.5);
+  }
+
+  .neon-cyan {
+    color: #00e5ff;
+    text-shadow: 0 0 7px #00e5ff, 0 0 14px #00e5ff, 0 0 28px rgba(0,229,255,0.5);
+  }
+
+  .neon-yellow {
+    color: #ffd700;
+    text-shadow: 0 0 7px #ffd700, 0 0 14px #ffd700, 0 0 28px rgba(255,215,0,0.5);
+  }
+
+  .neon-purple {
+    color: #bf5fff;
+    text-shadow: 0 0 7px #bf5fff, 0 0 14px #bf5fff, 0 0 28px rgba(191,95,255,0.5);
+  }
+
+  /* Pixel borders */
+  .pixel-border-green {
+    border: 2px solid #39ff14;
+    box-shadow: 3px 3px 0 #1a7a00, inset 0 0 12px rgba(57,255,20,0.05);
+  }
+
+  .pixel-border-pink {
+    border: 2px solid #ff2d78;
+    box-shadow: 3px 3px 0 #7a0030, inset 0 0 12px rgba(255,45,120,0.05);
+  }
+
+  .pixel-border-cyan {
+    border: 2px solid #00e5ff;
+    box-shadow: 3px 3px 0 #006b7a, inset 0 0 12px rgba(0,229,255,0.05);
+  }
+
+  .pixel-border-yellow {
+    border: 2px solid #ffd700;
+    box-shadow: 3px 3px 0 #7a6500, inset 0 0 12px rgba(255,215,0,0.05);
+  }
+
+  .pixel-border-purple {
+    border: 2px solid #bf5fff;
+    box-shadow: 3px 3px 0 #5a0099, inset 0 0 12px rgba(191,95,255,0.05);
+  }
+
+  /* Arcade buttons */
+  .btn-arcade {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.7rem;
+    padding: 14px 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    user-select: none;
+    border: 2px solid;
+    background: transparent;
+    transition: filter 0.1s, transform 0.05s;
+    min-height: 52px;
+    min-width: 52px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+  }
+
+  .btn-arcade:active {
+    transform: translate(2px, 2px);
+    filter: brightness(0.8);
+  }
+
+  .btn-arcade:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .btn-green {
+    color: #39ff14;
+    border-color: #39ff14;
+    box-shadow: 4px 4px 0 #1a7a00, inset 0 0 15px rgba(57,255,20,0.08);
+  }
+
+  .btn-green:hover:not(:disabled) {
+    background: rgba(57,255,20,0.12);
+  }
+
+  .btn-green:active:not(:disabled) {
+    box-shadow: 1px 1px 0 #1a7a00;
+  }
+
+  .btn-pink {
+    color: #ff2d78;
+    border-color: #ff2d78;
+    box-shadow: 4px 4px 0 #7a0030, inset 0 0 15px rgba(255,45,120,0.08);
+  }
+
+  .btn-pink:hover:not(:disabled) {
+    background: rgba(255,45,120,0.12);
+  }
+
+  .btn-pink:active:not(:disabled) {
+    box-shadow: 1px 1px 0 #7a0030;
+  }
+
+  .btn-cyan {
+    color: #00e5ff;
+    border-color: #00e5ff;
+    box-shadow: 4px 4px 0 #006b7a, inset 0 0 15px rgba(0,229,255,0.08);
+  }
+
+  .btn-cyan:hover:not(:disabled) {
+    background: rgba(0,229,255,0.12);
+  }
+
+  .btn-yellow {
+    color: #ffd700;
+    border-color: #ffd700;
+    box-shadow: 4px 4px 0 #7a6500, inset 0 0 15px rgba(255,215,0,0.08);
+  }
+
+  .btn-yellow:hover:not(:disabled) {
+    background: rgba(255,215,0,0.12);
+  }
+
+  /* Input fields */
+  .input-arcade {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.75rem;
+    background: #080810;
+    border: 2px solid #2a2a4a;
+    color: #e0e0e0;
+    padding: 14px 16px;
+    width: 100%;
+    outline: none;
+    caret-color: #39ff14;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    min-height: 52px;
+  }
+
+  .input-arcade::placeholder {
+    color: #444466;
+  }
+
+  .input-arcade:focus {
+    border-color: #39ff14;
+    box-shadow: 0 0 12px rgba(57,255,20,0.2);
+  }
+
+  /* Game layout */
+  .game-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    overflow: hidden;
+    background: #0a0a0a;
+  }
+
+  .game-header {
+    flex-shrink: 0;
+    background: #0f0f1a;
+    border-bottom: 2px solid #2a2a4a;
+  }
+
+  .game-content {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .game-bottom-nav {
+    flex-shrink: 0;
+    background: #0f0f1a;
+    border-top: 2px solid #2a2a4a;
+  }
+
+  /* Score display */
+  .score-display {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.1em;
+  }
+
+  /* Drink type grid */
+  .drink-type-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 8px;
+    border: 2px solid #2a2a4a;
+    background: #0f0f1a;
+    cursor: pointer;
+    transition: all 0.1s;
+    min-height: 80px;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .drink-type-btn:active {
+    transform: scale(0.95);
+  }
+
+  .drink-type-btn.selected {
+    border-color: #39ff14;
+    background: rgba(57,255,20,0.1);
+    box-shadow: 0 0 12px rgba(57,255,20,0.2);
+  }
+
+  /* Achievement toast */
+  .achievement-toast {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    width: min(360px, 92vw);
+    animation: slideDown 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+
+  @keyframes slideDown {
+    from { transform: translateX(-50%) translateY(-120%); }
+    to { transform: translateX(-50%) translateY(12px); }
+  }
+
+  /* Player color dots */
+  .player-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 0; /* pixel style = no radius */
+    flex-shrink: 0;
+  }
+
+  /* Bar chart */
+  .bar-fill {
+    height: 100%;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+  }
+
+  /* Timeline new badge */
+  .badge-new {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.45rem;
+    padding: 2px 5px;
+    background: #ff2d78;
+    color: #fff;
+    text-shadow: none;
+    animation: blink 1s steps(1) infinite;
+  }
+
+  /* Loading dots */
+  .loading-dots span {
+    animation: blink 1s steps(1) infinite;
+  }
+  .loading-dots span:nth-child(2) { animation-delay: 0.33s; }
+  .loading-dots span:nth-child(3) { animation-delay: 0.66s; }
+
+  /* Tab indicator */
+  .tab-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 4px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.45rem;
+    cursor: pointer;
+    user-select: none;
+    border-top: 3px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+    min-height: 56px;
+    -webkit-tap-highlight-color: transparent;
+    background: transparent;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    color: #555577;
+  }
+
+  .tab-btn.active {
+    color: #39ff14;
+    border-top-color: #39ff14;
+    text-shadow: 0 0 7px #39ff14;
+  }
+
+  /* Confetti pixel */
+  .confetti-pixel {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    animation: confettiFall linear forwards;
+  }
+
+  @keyframes confettiFall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* Undo banner */
+  .undo-bar {
+    height: 4px;
+    background: #ffd700;
+    transition: width 1s linear;
+  }
+
+  /* Modal backdrop */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 1000;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .modal-content {
+    width: 100%;
+    max-width: 500px;
+    max-height: 90dvh;
+    background: #0f0f1a;
+    border-top: 2px solid #39ff14;
+    border-left: 2px solid #39ff14;
+    border-right: 2px solid #39ff14;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    animation: slideUp 0.25s ease-out forwards;
+  }
+}
