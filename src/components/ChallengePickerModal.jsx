@@ -7,19 +7,22 @@ export default function ChallengePickerModal({ targetPlayer, onClose }) {
   const [category, setCategory] = useState('drink')
   const [sending, setSending] = useState(false)
   const [sentKey, setSentKey] = useState(null)
+  const [sendError, setSendError] = useState(null)
 
   const filtered = CHALLENGES.filter(c => c.category === category)
 
   async function handleSelect(challenge) {
     if (sending) return
     setSending(true)
-    setSentKey(challenge.key)
+    setSendError(null)
     try {
       await sendChallenge(targetPlayer.id, targetPlayer.display_name, challenge.key)
+      setSentKey(challenge.key)
       setTimeout(onClose, 800)
-    } catch {
+    } catch (e) {
+      console.error('sendChallenge failed:', e)
+      setSendError(e?.message || 'Failed to send')
       setSending(false)
-      setSentKey(null)
     }
   }
 
@@ -44,6 +47,15 @@ export default function ChallengePickerModal({ targetPlayer, onClose }) {
             ✕
           </button>
         </div>
+
+        {/* Error banner */}
+        {sendError && (
+          <div className="px-5 py-2 bg-red-950 border-b border-red-800">
+            <span className="font-pixel text-xs text-red-400" style={{ fontSize: '0.5rem' }}>
+              ✗ {sendError}
+            </span>
+          </div>
+        )}
 
         {/* Category tabs */}
         <div className="flex border-b border-arcade-border">
